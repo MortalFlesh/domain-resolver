@@ -3,7 +3,7 @@ namespace ErrorHandling
 /// Functions for Result type (functor and monad).
 /// For applicatives, see Validation.
 [<RequireQualifiedAccess>]  // RequireQualifiedAccess forces the `Result.xxx` prefix to be used
-module Result =
+module internal Result =
     let tee f = function
         | Ok x -> f x; Ok x
         | Error x -> Error x
@@ -81,7 +81,7 @@ module Result =
         | Ok option -> option
         | Error e -> failwithf "Error %A" e
 
-    module Operators =
+    module internal Operators =
         /// Result.bind
         let inline (>>=) r f = Result.bind f r
 
@@ -120,7 +120,7 @@ module Result =
             fR >> Result.mapError fE
 
 [<AutoOpen>]
-module ResultComputationExpression =
+module internal ResultComputationExpression =
     // https://github.com/swlaschin/DomainModelingMadeFunctional/blob/master/src/OrderTaking/Result.fs#L178
 
     type ResultBuilder() =
@@ -169,7 +169,7 @@ type Validation<'Success,'Failure> =
 
 /// Functions for the `Validation` type (mostly applicative)
 [<RequireQualifiedAccess>]  // RequireQualifiedAccess forces the `Validation.xxx` prefix to be used
-module Validation =
+module internal Validation =
 
     /// Apply a Validation<fn> to a Validation<x> applicatively
     let apply (fV:Validation<_, _>) (xV:Validation<_, _>) :Validation<_, _> =
@@ -210,7 +210,7 @@ module Validation =
 //==============================================
 
 [<RequireQualifiedAccess>]  // RequireQualifiedAccess forces the `Async.xxx` prefix to be used
-module Async =
+module internal Async =
 
     /// Lift a function to Async
     let map f xA =
@@ -246,7 +246,7 @@ type AsyncResult<'Success,'Failure> =
     Async<Result<'Success,'Failure>>
 
 [<RequireQualifiedAccess>]  // RequireQualifiedAccess forces the `AsyncResult.xxx` prefix to be used
-module AsyncResult =
+module internal AsyncResult =
 
     /// Lift a function to AsyncResult
     let map f (x:AsyncResult<_, _>) : AsyncResult<_, _> =
@@ -379,7 +379,7 @@ module AsyncResult =
     let sleep (ms: int) =
         Async.Sleep ms |> ofAsync
 
-    module Operators =
+    module internal Operators =
         /// AsyncResult.bind
         let inline (>>=) r f = bind f r
 
@@ -404,7 +404,7 @@ module AsyncResult =
 
 /// The `asyncResult` computation expression is available globally without qualification
 [<AutoOpen>]
-module AsyncResultComputationExpression =
+module internal AsyncResultComputationExpression =
 
     type AsyncResultBuilder() =
         member __.Return(x) = AsyncResult.retn x

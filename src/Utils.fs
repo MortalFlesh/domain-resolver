@@ -1,12 +1,12 @@
 namespace Tuc.Domain
 
 [<RequireQualifiedAccess>]
-module Option =
-    module Operators =
+module internal Option =
+    module internal Operators =
         let (=>) key value = (key, value)
 
 [<RequireQualifiedAccess>]
-module String =
+module internal String =
     open System
 
     let toLower (value: string) =
@@ -51,7 +51,7 @@ module String =
         | _ -> None
 
 [<AutoOpen>]
-module Regexp =
+module internal Regexp =
     open System.Text.RegularExpressions
 
     // http://www.fssnip.net/29/title/Regular-expression-active-pattern
@@ -61,7 +61,7 @@ module Regexp =
         else None
 
 [<RequireQualifiedAccess>]
-module List =
+module internal List =
     /// see https://stackoverflow.com/questions/32363848/fastest-way-to-reduce-a-list-based-on-another-list-using-f
     let filterNotIn excluding list =
         let toExclude = set excluding
@@ -120,7 +120,7 @@ module List =
         list |> splitter [] [] f
 
 [<AutoOpen>]
-module Utils =
+module internal Utils =
     let tee f a =
         f a
         a

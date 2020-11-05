@@ -1,7 +1,7 @@
 namespace ErrorHandling
 
 [<RequireQualifiedAccess>]
-module Option =
+module internal Option =
     open System
 
     let retn x = Some x
@@ -47,7 +47,7 @@ module Option =
         | Some (Error error) -> Error error
         | None -> Ok None
 
-    module Operators =
+    module internal Operators =
         /// Option.bind
         let inline (>>=) o f = Option.bind f o
 
@@ -76,7 +76,7 @@ module Option =
         let (|>!) o f = o |> Option.iter f
 
 [<AutoOpen>]
-module OptionComputationExpression =
+module internal OptionComputationExpression =
     type MaybeBuilder() =
         member __.Return(x) = Some x
         member __.Bind(x, f) = Option.bind f x
